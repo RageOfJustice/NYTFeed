@@ -30,6 +30,7 @@ const Text = styled.Text<Selectable>`
   font-size: 12px;
   line-height: 14px;
   text-align: center;
+  text-transform: capitalize;
   color: ${({ selected, theme }) =>
     selected ? theme.colors.buttonSelected : theme.colors.text};
 `;

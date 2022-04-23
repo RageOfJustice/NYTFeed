@@ -50,6 +50,7 @@ describe('Button', () => {
                 "fontSize": 12,
                 "lineHeight": 14,
                 "textAlign": "center",
+                "textTransform": "capitalize",
               },
               undefined,
             ]
