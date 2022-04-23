@@ -1,15 +1,16 @@
 import React, { FC } from 'react';
 import styled from '@emotion/native';
 
-import { Button, SafeAreaView } from 'components';
+import { SafeAreaView } from 'components';
 import { Header } from './header';
+import { Section } from './section';
 
 export const MainScreen: FC = () => {
   return (
     <SafeAreaView edges={['bottom']}>
       <Header />
       <Wrapper>
-        <Button title="test" />
+        <Section title="Sections" />
       </Wrapper>
     </SafeAreaView>
   );

@@ -35,10 +35,10 @@ describe('Button', () => {
             "borderTopRightRadius": 4,
             "borderTopWidth": 1,
             "opacity": 1,
-            "paddingBottom": 12,
-            "paddingLeft": 12,
-            "paddingRight": 12,
-            "paddingTop": 12,
+            "paddingBottom": 6,
+            "paddingLeft": 6,
+            "paddingRight": 6,
+            "paddingTop": 6,
           }
         }
       >
@@ -47,8 +47,8 @@ describe('Button', () => {
             Array [
               Object {
                 "color": "#6a6b6b",
-                "fontSize": 14,
-                "lineHeight": 16,
+                "fontSize": 12,
+                "lineHeight": 14,
                 "textAlign": "center",
               },
               undefined,

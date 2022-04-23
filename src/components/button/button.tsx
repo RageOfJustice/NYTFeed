@@ -19,7 +19,7 @@ export const Button: FC<Props> = ({ title, selected, ...rest }) => {
 };
 
 const Wrapper = styled.TouchableOpacity<Selectable>`
-  padding: 12px;
+  padding: 6px;
   border-radius: 4px;
   border-width: 1px;
   border-color: ${({ selected, theme }) =>
@@ -27,8 +27,8 @@ const Wrapper = styled.TouchableOpacity<Selectable>`
 `;
 
 const Text = styled.Text<Selectable>`
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 12px;
+  line-height: 14px;
   text-align: center;
   color: ${({ selected, theme }) =>
     selected ? theme.colors.buttonSelected : theme.colors.text};
