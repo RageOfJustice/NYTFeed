@@ -1,15 +1,16 @@
 import React from 'react';
-import { ThemeProvider } from '@shopify/restyle';
+import { ThemeProvider } from '@emotion/react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { Box, Text } from 'components';
-import { theme } from './theme';
+import { theme } from 'theme';
+import { MainScreen } from 'screens';
 
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Box m="m">
-        <Text>Test</Text>
-      </Box>
+      <SafeAreaProvider>
+        <MainScreen />
+      </SafeAreaProvider>
     </ThemeProvider>
   );
 };
