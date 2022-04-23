@@ -11,6 +11,8 @@ export const theme = {
     background: palette.white,
     text: palette.grey,
     buttonSelected: palette.purplePrimary,
+    headerBackground: palette.purplePrimary,
+    headerText: palette.white,
   },
 };
 

@@ -2,14 +2,14 @@ import React, { FC } from 'react';
 import styled from '@emotion/native';
 
 import { Button, SafeAreaView } from 'components';
+import { Header } from './header';
 
-interface Props {}
-
-export const MainScreen: FC<Props> = props => {
+export const MainScreen: FC = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView edges={['bottom']}>
+      <Header />
       <Wrapper>
-        <Button title="test"></Button>
+        <Button title="test" />
       </Wrapper>
     </SafeAreaView>
   );

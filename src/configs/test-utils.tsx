@@ -1,3 +1,4 @@
+/* eslint-disable import/export */
 import React, { FC, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react-native';
 import { ThemeProvider } from '@emotion/react';

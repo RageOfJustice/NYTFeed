@@ -1,6 +1,9 @@
 import React from 'react';
 import { ThemeProvider } from '@emotion/react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from 'react-native-safe-area-context';
 
 import { theme } from 'theme';
 import { MainScreen } from 'screens';
@@ -8,7 +11,7 @@ import { MainScreen } from 'screens';
 const App = () => {
   return (
     <ThemeProvider theme={theme}>
-      <SafeAreaProvider>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
         <MainScreen />
       </SafeAreaProvider>
     </ThemeProvider>
