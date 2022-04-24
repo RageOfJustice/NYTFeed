@@ -12,7 +12,9 @@
   "rules": {
     "no-shadow": "off",
     "curly": "off",
-    "comma-dangle": ["warn", "only-multiline"]
+    "comma-dangle": ["warn", "only-multiline"],
+    "no-console": "error",
+    "@typescript-eslint/ban-ts-comment": "off"
   },
   "settings": {
     "import/parsers": {

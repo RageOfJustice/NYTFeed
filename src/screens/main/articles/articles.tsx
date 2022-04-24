@@ -1,24 +1,17 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { FlatList, Linking } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { useAtomValue } from 'jotai';
 import styled, { css } from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { Article } from 'api/types';
-import { NewsSection, getArticlesBySection } from 'api/top-stories';
-import { Item } from './item';
 import { Divider } from 'components';
+import { Article } from 'api/types';
+import { Item } from './item';
+import { articlesBySectionAtom } from '../atoms';
 
-interface Props {
-  section: NewsSection;
-}
-
-export const Articles: FC<Props> = ({ section }) => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  useEffect(() => {
-    getArticlesBySection(section).then(setArticles);
-  }, [section]);
-
+export const Articles: FC = () => {
+  const articles = useAtomValue(articlesBySectionAtom);
   const handlePressItem = (item: Article) => Linking.openURL(item.url);
 
   const theme = useTheme();

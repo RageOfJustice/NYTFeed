@@ -1,22 +1,36 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { FlatList } from 'react-native';
 import styled, { css } from '@emotion/native';
+import { useSetAtom } from 'jotai';
 import _ from 'lodash';
 
-import { Button, Divider } from 'components';
-import { NEWS_SECTIONS, NewsSection } from 'api/top-stories';
+import { Divider } from 'components';
+import {
+  NEWS_SECTIONS,
+  NewsSection,
+  getArticlesBySection,
+} from 'api/top-stories';
+import { selectedSectionAtom, allArticlesAtom } from '../atoms';
+import { SectionButton } from './button';
 
 interface Props {
   title: string;
 }
 
 export const Section: FC<Props> = ({ title }) => {
-  const [selectedSection, setSelectedSection] = useState<NewsSection>('arts');
+  const setSelectedSection = useSetAtom(selectedSectionAtom);
+  const setArticles = useSetAtom(allArticlesAtom);
 
   const splitSections = useMemo(() => {
     const columns = 2;
     return _.chunk(NEWS_SECTIONS, columns);
   }, []);
+
+  const handlePressSection = async (section: NewsSection) => {
+    setSelectedSection(section);
+    const articlesBySection = await getArticlesBySection(section);
+    setArticles({ section, articles: articlesBySection });
+  };
 
   return (
     <Wrapper>
@@ -31,18 +45,10 @@ export const Section: FC<Props> = ({ title }) => {
         ItemSeparatorComponent={() => <Divider width={16} />}
         renderItem={({ item }) => (
           <ItemWrapper>
-            <Button
-              selected={item[0] === selectedSection}
-              title={item[0]}
-              onPress={() => setSelectedSection(item[0])}
-            />
+            <SectionButton onPress={handlePressSection} section={item[0]} />
             <Divider height={8} />
             {item[1] && (
-              <Button
-                selected={item[1] === selectedSection}
-                title={item[1]}
-                onPress={() => setSelectedSection(item[1])}
-              />
+              <SectionButton onPress={handlePressSection} section={item[1]} />
             )}
           </ItemWrapper>
         )}

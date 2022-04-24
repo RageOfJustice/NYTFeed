@@ -13,7 +13,7 @@ interface Props {
 export const Item: FC<Props> = ({ item, onPress }) => {
   return (
     <Wrapper onPress={() => onPress?.(item)}>
-      <Image source={{ uri: item.multimedia[0]?.url }} />
+      <Image source={{ uri: item.multimedia?.[0].url }} />
       <RightColumn>
         <Title numberOfLines={2}>{item.title}</Title>
         <Text>{item.byline}</Text>

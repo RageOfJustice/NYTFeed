@@ -11,5 +11,5 @@ export interface Article {
   byline: string;
   des_facet: string[];
   geo_facet: string[];
-  multimedia: Multimedia[];
+  multimedia: Multimedia[] | null;
 }
