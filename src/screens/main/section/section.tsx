@@ -13,11 +13,7 @@ import {
 import { selectedSectionAtom, allArticlesAtom } from '../atoms';
 import { SectionButton } from './button';
 
-interface Props {
-  title: string;
-}
-
-export const Section: FC<Props> = ({ title }) => {
+export const Section: FC = () => {
   const setSelectedSection = useSetAtom(selectedSectionAtom);
   const setArticles = useSetAtom(allArticlesAtom);
 
@@ -34,7 +30,7 @@ export const Section: FC<Props> = ({ title }) => {
 
   return (
     <Wrapper>
-      <Title>{title}</Title>
+      <Title>Sections</Title>
       <FlatList
         horizontal
         contentContainerStyle={containerStyle}

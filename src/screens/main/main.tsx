@@ -9,8 +9,8 @@ export const MainScreen: FC = () => {
   return (
     <Wrapper>
       <Header />
-      <Section title="Sections" />
-      <Articles section="arts" />
+      <Section />
+      <Articles />
     </Wrapper>
   );
 };
