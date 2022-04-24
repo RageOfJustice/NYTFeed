@@ -3,16 +3,15 @@ import { FlatList } from 'react-native';
 import styled, { css } from '@emotion/native';
 import _ from 'lodash';
 
-import { Button } from 'components';
-import { NEWS_SECTIONS } from '../constants';
+import { Button, Divider } from 'components';
+import { NEWS_SECTIONS, NewsSection } from '../constants';
 
 interface Props {
   title: string;
 }
 
 export const Section: FC<Props> = ({ title }) => {
-  const [selectedSection, setSelectedSection] =
-    useState<typeof NEWS_SECTIONS[number]>('arts');
+  const [selectedSection, setSelectedSection] = useState<NewsSection>('arts');
 
   const splitSections = useMemo(() => {
     const columns = 2;
@@ -59,7 +58,7 @@ const Wrapper = styled.View`
 const Title = styled.Text`
   font-size: 16px;
   font-weight: 600;
-  color: ${props => props.theme.colors.text};
+  color: ${props => props.theme.colors.titleText};
 `;
 
 const listStyle = css`
@@ -73,9 +72,4 @@ const containerStyle = css`
 const ItemWrapper = styled.View`
   width: 100px;
   flex-direction: column;
-`;
-
-const Divider = styled.View<{ height?: number; width?: number }>`
-  height: ${props => props.height?.toString() ?? '0'}px;
-  width: ${props => props.width?.toString() ?? '0'}px;
 `;

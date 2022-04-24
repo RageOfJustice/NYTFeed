@@ -26,3 +26,5 @@ export const NEWS_SECTIONS = [
   'us',
   'world',
 ] as const;
+
+export type NewsSection = typeof NEWS_SECTIONS[number];

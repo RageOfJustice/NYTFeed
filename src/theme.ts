@@ -4,6 +4,7 @@ const palette = {
   cyanPrimary: '#75d0e3',
   grey: '#6a6b6b',
   white: '#ffffff',
+  black: '#333333',
 };
 
 export const theme = {
@@ -13,6 +14,9 @@ export const theme = {
     buttonSelected: palette.purplePrimary,
     headerBackground: palette.purplePrimary,
     headerText: palette.white,
+    titleText: palette.black,
+    cardBackground: palette.white,
+    articlesBackground: palette.cyanPrimary,
   },
 };
 

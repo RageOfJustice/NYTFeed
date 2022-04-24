@@ -1,21 +1,20 @@
 import React, { FC } from 'react';
 import styled from '@emotion/native';
 
-import { SafeAreaView } from 'components';
 import { Header } from './header';
 import { Section } from './section';
+import { Articles } from './articles';
 
 export const MainScreen: FC = () => {
   return (
-    <SafeAreaView edges={['bottom']}>
+    <Wrapper>
       <Header />
-      <Wrapper>
-        <Section title="Sections" />
-      </Wrapper>
-    </SafeAreaView>
+      <Section title="Sections" />
+      <Articles section="arts" />
+    </Wrapper>
   );
 };
 
-const Wrapper = styled.ScrollView`
+const Wrapper = styled.View`
   flex: 1;
 `;
