@@ -4,7 +4,7 @@ import styled, { css } from '@emotion/native';
 import _ from 'lodash';
 
 import { Button, Divider } from 'components';
-import { NEWS_SECTIONS, NewsSection } from '../constants';
+import { NEWS_SECTIONS, NewsSection } from 'api/top-stories';
 
 interface Props {
   title: string;

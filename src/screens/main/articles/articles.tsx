@@ -5,7 +5,7 @@ import styled, { css } from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 import { Article } from 'api/types';
-import type { NewsSection } from '../constants';
+import { NewsSection, getArticlesBySection } from 'api/top-stories';
 import { Item } from './item';
 import { Divider } from 'components';
 
@@ -13,17 +13,10 @@ interface Props {
   section: NewsSection;
 }
 
-const getArticles = async (section: NewsSection): Promise<Article[]> =>
-  fetch(
-    `https://api.nytimes.com/svc/topstories/v2/${section}.json?api-key=uvw14EGdxld8UBMlmAmGMNr9bNPnWkj1`
-  )
-    .then(res => res.json())
-    .then(res => res.results ?? []);
-
 export const Articles: FC<Props> = ({ section }) => {
   const [articles, setArticles] = useState<Article[]>([]);
   useEffect(() => {
-    getArticles(section).then(setArticles);
+    getArticlesBySection(section).then(setArticles);
   }, [section]);
 
   const handlePressItem = (item: Article) => Linking.openURL(item.url);

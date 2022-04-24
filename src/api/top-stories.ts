@@ -1,3 +1,16 @@
+import { API_KEY } from 'react-native-dotenv';
+import { client } from './client';
+import { Article } from './types';
+
+client.interceptors.request;
+
+export const getArticlesBySection = async (
+  section: NewsSection
+): Promise<Article[]> =>
+  client
+    .get(`${section}.json?api-key=${API_KEY}`)
+    .then(res => res.data.results ?? []);
+
 export const NEWS_SECTIONS = [
   'arts',
   'automobiles',
