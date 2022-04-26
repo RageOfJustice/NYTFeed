@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
@@ -18,9 +18,12 @@ export const Button: FC<Props> = ({
   onConfirm,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [locallySelectedItems, setLocallySelectedItems] = useState<
-    Record<string, boolean>
-  >({});
+  const [locallySelectedItems, setLocallySelectedItems] =
+    useState<Record<string, boolean>>(selectedItems);
+
+  useEffect(() => {
+    setLocallySelectedItems(selectedItems);
+  }, [selectedItems]);
   const closeModal = () => setModalVisible(false);
 
   return (
@@ -29,7 +32,6 @@ export const Button: FC<Props> = ({
         <Text>{title}</Text>
       </Wrapper>
       <Modal
-        onModalHide={() => setLocallySelectedItems({})}
         onBackButtonPress={closeModal}
         onBackdropPress={closeModal}
         isVisible={modalVisible}>
@@ -48,8 +50,7 @@ export const Button: FC<Props> = ({
                     [item]: !state[item],
                   }))
                 }>
-                <ModalItemText
-                  selected={locallySelectedItems[item] || selectedItems[item]}>
+                <ModalItemText selected={locallySelectedItems[item]}>
                   {item}
                 </ModalItemText>
               </ModalItemWrapper>

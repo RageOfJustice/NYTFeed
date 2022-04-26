@@ -11,7 +11,7 @@ import { Divider } from 'components';
 import { Article } from 'api/types';
 import { Item } from './item';
 import {
-  articlesBySectionAtom,
+  filteredArticlesBySectionAtom,
   isSelectedSectionLoadingAtom,
   useRefreshSectionArticles,
 } from '../atoms';
@@ -19,7 +19,7 @@ import {
 const SKELETON_RANGE = range(0, 7);
 
 export const Articles: FC = () => {
-  const articles = useAtomValue(articlesBySectionAtom);
+  const articles = useAtomValue(filteredArticlesBySectionAtom);
   const loading = useAtomValue(isSelectedSectionLoadingAtom);
   const handlePressItem = (item: Article) => Linking.openURL(item.url);
 

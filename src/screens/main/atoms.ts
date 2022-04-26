@@ -1,8 +1,9 @@
-import { useCallback } from 'react';
-import { atom, useAtom, useSetAtom, useAtomValue } from 'jotai';
+import { useCallback, useMemo } from 'react';
+import { atom, useAtom, useSetAtom, useAtomValue, WritableAtom } from 'jotai';
 import { getArticlesBySection, NewsSection } from 'api/top-stories';
 import { Article } from 'api/types';
 import { setItem, getItem } from 'api/storage';
+import { uniq } from 'lodash';
 
 export const selectedSectionAtom = atom<NewsSection | undefined>(undefined);
 
@@ -82,17 +83,52 @@ allArticlesAtom.onMount = set => {
 export const articlesBySectionAtom = atom<Article[]>(get => {
   const selectedSection = get(selectedSectionAtom);
   if (!selectedSection) return [];
-  const articles = get(allArticlesAtom);
-  return articles[selectedSection] ?? [];
+  const articles = get(allArticlesAtom)[selectedSection];
+
+  return articles ?? [];
+});
+
+export const filteredArticlesBySectionAtom = atom(get => {
+  const articles = get(articlesBySectionAtom);
+
+  const locations = Object.entries(get(locationsFilterAtom))
+    .filter(([_, value]) => value)
+    .map(([key]) => key);
+  const descriptions = Object.entries(get(descriptionsFilterAtom))
+    .filter(([_, value]) => value)
+    .map(([key]) => key);
+
+  const filteredArticles = articles.filter(a => {
+    let hasLocation = locations.length === 0;
+    for (const location of locations) {
+      if (a.geo_facet.includes(location)) {
+        hasLocation = true;
+        break;
+      }
+    }
+    let hasDescription = descriptions.length === 0;
+    for (const description of descriptions) {
+      if (a.des_facet.includes(description)) {
+        hasDescription = true;
+        break;
+      }
+    }
+    return hasLocation && hasDescription;
+  });
+
+  // console.log(filteredArticles.map(a => a.title));
+  return filteredArticles;
 });
 
 export const useSelectSection = () => {
   const setArticles = useSetAtom(allArticlesAtom);
   const setLoadingArticles = useSetAtom(loadingSectionsAtom);
   const [selectedSection, setSelectedSection] = useAtom(selectedSectionAtom);
+  const resetFilters = useResetFilters();
   const selectSection = useCallback(
     async (section: NewsSection) => {
       setSelectedSection(section);
+      resetFilters();
       try {
         setLoadingArticles({ [section]: true });
         const articlesBySection = await getArticlesBySection(section);
@@ -103,8 +139,77 @@ export const useSelectSection = () => {
         // TODO: show notification
       }
     },
-    [setArticles, setLoadingArticles, setSelectedSection]
+    [setArticles, setLoadingArticles, setSelectedSection, resetFilters]
   );
 
   return [selectedSection, selectSection] as const;
+};
+
+const locationsFilterAtom = atom<Record<Article['geo_facet'][number], boolean>>(
+  {}
+);
+
+const descriptionsFilterAtom = atom<
+  Record<Article['des_facet'][number], boolean>
+>({});
+
+type FilterAtomType<Item extends string> = WritableAtom<
+  Record<Item, boolean>,
+  Record<Item, boolean>
+>;
+
+const useFilter = <Item extends string>(
+  items: Item[],
+  filterAtom: FilterAtomType<Item>
+) => {
+  const [selectedItems, setSelectedItems] = useAtom(filterAtom);
+
+  const toggleItems = useCallback(
+    (updatedItems: Record<Item, boolean>) =>
+      // @ts-expect-error
+      setSelectedItems({ ...selectedItems, ...updatedItems }),
+    [selectedItems, setSelectedItems]
+  );
+
+  return { items, selectedItems, toggleItems } as const;
+};
+
+const useResetFilters = () => {
+  const setLocationsFilter = useSetAtom(locationsFilterAtom);
+  const setDescriptionsFilter = useSetAtom(descriptionsFilterAtom);
+
+  return useCallback(() => {
+    setLocationsFilter({});
+    setDescriptionsFilter({});
+  }, [setDescriptionsFilter, setLocationsFilter]);
+};
+
+export const useLocationsFilter = () => {
+  const articles = useAtomValue(articlesBySectionAtom);
+  const locations = useMemo(
+    () =>
+      uniq(
+        articles.reduce<string[]>((acc, article) => {
+          acc.push(...article.geo_facet);
+          return acc;
+        }, [])
+      ),
+    [articles]
+  );
+  return useFilter(locations, locationsFilterAtom);
+};
+
+export const useDescriptionsFilter = () => {
+  const articles = useAtomValue(articlesBySectionAtom);
+  const descriptions = useMemo(
+    () =>
+      uniq(
+        articles.reduce<string[]>((acc, article) => {
+          acc.push(...article.des_facet);
+          return acc;
+        }, [])
+      ),
+    [articles]
+  );
+  return useFilter(descriptions, descriptionsFilterAtom);
 };
