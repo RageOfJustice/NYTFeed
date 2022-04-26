@@ -1,15 +1,18 @@
 import { atom, useAtom, useSetAtom } from 'jotai';
-import {
-  getArticlesBySection,
-  NewsSection,
-  NEWS_SECTIONS,
-} from 'api/top-stories';
+import { getArticlesBySection, NewsSection } from 'api/top-stories';
 import { Article } from 'api/types';
 import { setItem, getItem } from 'api/storage';
 
-export const selectedSectionAtom = atom<NewsSection>(NEWS_SECTIONS[0]);
+export const selectedSectionAtom = atom<NewsSection | undefined>(undefined);
 
 export type ArticlesMap = Record<NewsSection, Article[]>;
+
+const fetchArticlesAtom = atom({
+  loading: false,
+  refreshing: false,
+  data: null,
+  error: null,
+});
 
 export const allArticlesAtom = atom<ArticlesMap, Partial<ArticlesMap>, void>(
   {} as ArticlesMap,
@@ -27,12 +30,13 @@ allArticlesAtom.onMount = set => {
 
 export const articlesBySectionAtom = atom<Article[]>(get => {
   const selectedSection = get(selectedSectionAtom);
+  if (!selectedSection) return [];
   const articles = get(allArticlesAtom);
   return articles[selectedSection] ?? [];
 });
 
 export const useSelectSection = (): [
-  NewsSection,
+  NewsSection | undefined,
   (section: NewsSection) => Promise<void>
 ] => {
   const setArticles = useSetAtom(allArticlesAtom);
@@ -40,7 +44,8 @@ export const useSelectSection = (): [
   const selectSection = async (section: NewsSection) => {
     setSelectedSection(section);
     const articlesBySection = await getArticlesBySection(section);
-    setArticles({ [section]: articlesBySection });
+    const validArticles = articlesBySection.filter(a => !!a.url);
+    setArticles({ [section]: validArticles });
   };
 
   return [selectedSection, selectSection];

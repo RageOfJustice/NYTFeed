@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { formatDistanceToNow } from 'date-fns';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import styled from '@emotion/native';
 
 import { Article } from 'api/types';
@@ -10,7 +11,7 @@ interface Props {
   onPress?: (item: Article) => void;
 }
 
-export const Item: FC<Props> = ({ item, onPress }) => {
+export const Item: FC<Props> & { Skeleton: React.FC } = ({ item, onPress }) => {
   return (
     <Wrapper onPress={() => onPress?.(item)}>
       <Cover source={{ uri: item.multimedia?.[0].url }} />
@@ -27,6 +28,35 @@ export const Item: FC<Props> = ({ item, onPress }) => {
     </Wrapper>
   );
 };
+
+const Skeleton: FC = () => {
+  return (
+    <Wrapper style={{ flexDirection: 'column' }}>
+      <SkeletonPlaceholder>
+        <SkeletonPlaceholder.Item flexDirection="row">
+          <SkeletonPlaceholder.Item width={90} height={90} marginRight={16} />
+          <SkeletonPlaceholder.Item flex={1}>
+            <SkeletonPlaceholder.Item width="100%" height={16} />
+            <SkeletonPlaceholder.Item
+              width="40%"
+              height={16}
+              marginTop={4}
+              marginBottom={16}
+            />
+            <SkeletonPlaceholder.Item
+              width="40%"
+              height={12}
+              marginBottom={4}
+            />
+            <SkeletonPlaceholder.Item width={50} height={12} />
+          </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder.Item>
+      </SkeletonPlaceholder>
+    </Wrapper>
+  );
+};
+
+Item.Skeleton = Skeleton;
 
 const Wrapper = styled.TouchableOpacity`
   padding: 8px;
