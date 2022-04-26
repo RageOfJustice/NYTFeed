@@ -10,7 +10,11 @@ import { useTheme } from '@emotion/react';
 import { Divider } from 'components';
 import { Article } from 'api/types';
 import { Item } from './item';
-import { articlesBySectionAtom, isSelectedSectionLoadingAtom } from '../atoms';
+import {
+  articlesBySectionAtom,
+  isSelectedSectionLoadingAtom,
+  useRefreshSectionArticles,
+} from '../atoms';
 
 const SKELETON_RANGE = range(0, 7);
 
@@ -32,9 +36,13 @@ export const Articles: FC = () => {
   const theme = useTheme();
   const backgroundStyle = { backgroundColor: theme.colors.articlesBackground };
 
+  const [refreshing, onRefresh] = useRefreshSectionArticles();
+
   if (loading && articles.length === 0) {
     return (
       <FlatList
+        refreshing={refreshing}
+        onRefresh={onRefresh}
         style={[listStyle, backgroundStyle]}
         contentContainerStyle={containerStyle}
         ItemSeparatorComponent={() => <Divider height={12} />}
@@ -46,10 +54,13 @@ export const Articles: FC = () => {
 
   return (
     <FlatList
+      refreshing={refreshing}
+      onRefresh={onRefresh}
       style={[listStyle, backgroundStyle]}
       contentContainerStyle={containerStyle}
       ItemSeparatorComponent={() => <Divider height={12} />}
       data={sortedArticles}
+      keyExtractor={item => item.uri}
       renderItem={({ item }) => <Item item={item} onPress={handlePressItem} />}
     />
   );
