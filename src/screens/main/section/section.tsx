@@ -4,7 +4,7 @@ import { chunk } from 'lodash';
 import styled, { css } from '@emotion/native';
 
 import { Divider } from 'components';
-import { NEWS_SECTIONS, NewsSection } from 'api/top-stories';
+import { NEWS_SECTIONS } from 'api/top-stories';
 import { useSelectSection } from '../atoms';
 import { SectionButton } from './button';
 
@@ -15,10 +15,6 @@ export const Section: FC = () => {
   }, []);
 
   const [, setSelectedSection] = useSelectSection();
-
-  const handlePressSection = async (section: NewsSection) => {
-    await setSelectedSection(section);
-  };
 
   return (
     <Wrapper>
@@ -33,10 +29,10 @@ export const Section: FC = () => {
         ItemSeparatorComponent={() => <Divider width={16} />}
         renderItem={({ item }) => (
           <ItemWrapper>
-            <SectionButton onPress={handlePressSection} section={item[0]} />
+            <SectionButton onPress={setSelectedSection} section={item[0]} />
             <Divider height={8} />
             {item[1] && (
-              <SectionButton onPress={handlePressSection} section={item[1]} />
+              <SectionButton onPress={setSelectedSection} section={item[1]} />
             )}
           </ItemWrapper>
         )}

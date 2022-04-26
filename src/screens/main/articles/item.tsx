@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import FastImage from 'react-native-fast-image';
 import { formatDistanceToNow } from 'date-fns';
 import styled from '@emotion/native';
 
 import { Article } from 'api/types';
+import { Image } from 'components';
 
 interface Props {
   item: Article;
@@ -13,10 +13,10 @@ interface Props {
 export const Item: FC<Props> = ({ item, onPress }) => {
   return (
     <Wrapper onPress={() => onPress?.(item)}>
-      <Image source={{ uri: item.multimedia?.[0].url }} />
+      <Cover source={{ uri: item.multimedia?.[0].url }} />
       <RightColumn>
         <Title numberOfLines={2}>{item.title}</Title>
-        <Text>{item.byline}</Text>
+        <Text numberOfLines={1}>{item.byline}</Text>
         <Text>
           Published:{' '}
           {formatDistanceToNow(new Date(item.published_date), {
@@ -35,7 +35,7 @@ const Wrapper = styled.TouchableOpacity`
   background-color: ${props => props.theme.colors.cardBackground};
 `;
 
-const Image = styled(FastImage)`
+const Cover = styled(Image)`
   height: 90px;
   width: 90px;
   margin-right: 16px;

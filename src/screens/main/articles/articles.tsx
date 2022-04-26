@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { FlatList, Linking } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { useAtomValue } from 'jotai';
-import styled, { css } from '@emotion/native';
+import { css } from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 import { Divider } from 'components';
