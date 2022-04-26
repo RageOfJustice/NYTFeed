@@ -3,12 +3,17 @@ import { StatusBar } from 'react-native';
 import styled from '@emotion/native';
 
 import { SafeAreaView } from 'components';
+import { useTheme } from '@emotion/react';
 
 export const Header: FC = () => {
+  const theme = useTheme();
   return (
     <Wrapper>
       <SafeAreaView noStretch edges={['top']}>
-        <StatusBar barStyle="light-content" />
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={theme.colors.headerBackground}
+        />
         <Title>NYT News Feed</Title>
       </SafeAreaView>
     </Wrapper>

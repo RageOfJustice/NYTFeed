@@ -28,7 +28,7 @@ export const Articles: FC = () => {
 };
 
 const containerStyle = css`
-  padding: 16px 16px ${getBottomSpace().toString()}px;
+  padding: 16px 16px ${(getBottomSpace() + 16).toString()}px;
 `;
 
 const listStyle = css`
