@@ -7,11 +7,21 @@ export const selectedSectionAtom = atom<NewsSection | undefined>(undefined);
 
 export type ArticlesMap = Record<NewsSection, Article[]>;
 
-const fetchArticlesAtom = atom({
-  loading: false,
-  refreshing: false,
-  data: null,
-  error: null,
+type LoadingSectionsMap = Record<NewsSection, boolean>;
+const loadingSectionsAtom = atom<
+  LoadingSectionsMap,
+  Partial<LoadingSectionsMap>
+>({} as LoadingSectionsMap, (get, set, partition) => {
+  const currentState = get(loadingSectionsAtom);
+  const updatedState = { ...currentState, ...partition };
+  set(loadingSectionsAtom, updatedState);
+});
+
+export const isSelectedSectionLoadingAtom = atom<boolean>(get => {
+  const selectedSection = get(selectedSectionAtom);
+  if (!selectedSection) return false;
+  const loadingSections = get(loadingSectionsAtom);
+  return loadingSections[selectedSection];
 });
 
 export const allArticlesAtom = atom<ArticlesMap, Partial<ArticlesMap>, void>(
@@ -40,12 +50,19 @@ export const useSelectSection = (): [
   (section: NewsSection) => Promise<void>
 ] => {
   const setArticles = useSetAtom(allArticlesAtom);
+  const setLoadingArticles = useSetAtom(loadingSectionsAtom);
   const [selectedSection, setSelectedSection] = useAtom(selectedSectionAtom);
   const selectSection = async (section: NewsSection) => {
     setSelectedSection(section);
-    const articlesBySection = await getArticlesBySection(section);
-    const validArticles = articlesBySection.filter(a => !!a.url);
-    setArticles({ [section]: validArticles });
+    try {
+      setLoadingArticles({ [section]: true });
+      const articlesBySection = await getArticlesBySection(section);
+      const validArticles = articlesBySection.filter(a => !!a.url);
+      setArticles({ [section]: validArticles });
+      setLoadingArticles({ [section]: false });
+    } catch {
+      // TODO: show notification
+    }
   };
 
   return [selectedSection, selectSection];

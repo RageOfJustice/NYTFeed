@@ -10,12 +10,13 @@ import { useTheme } from '@emotion/react';
 import { Divider } from 'components';
 import { Article } from 'api/types';
 import { Item } from './item';
-import { articlesBySectionAtom } from '../atoms';
+import { articlesBySectionAtom, isSelectedSectionLoadingAtom } from '../atoms';
 
 const SKELETON_RANGE = range(0, 7);
 
 export const Articles: FC = () => {
   const articles = useAtomValue(articlesBySectionAtom);
+  const loading = useAtomValue(isSelectedSectionLoadingAtom);
   const handlePressItem = (item: Article) => Linking.openURL(item.url);
 
   const sortedArticles = useMemo(
@@ -30,8 +31,6 @@ export const Articles: FC = () => {
 
   const theme = useTheme();
   const backgroundStyle = { backgroundColor: theme.colors.articlesBackground };
-
-  const loading = true;
 
   if (loading && articles.length === 0) {
     return (

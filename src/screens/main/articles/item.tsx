@@ -31,7 +31,7 @@ export const Item: FC<Props> & { Skeleton: React.FC } = ({ item, onPress }) => {
 
 const Skeleton: FC = () => {
   return (
-    <Wrapper style={{ flexDirection: 'column' }}>
+    <Wrapper column>
       <SkeletonPlaceholder>
         <SkeletonPlaceholder.Item flexDirection="row">
           <SkeletonPlaceholder.Item width={90} height={90} marginRight={16} />
@@ -58,10 +58,10 @@ const Skeleton: FC = () => {
 
 Item.Skeleton = Skeleton;
 
-const Wrapper = styled.TouchableOpacity`
+const Wrapper = styled.TouchableOpacity<{ column?: boolean }>`
   padding: 8px;
   border-radius: 4px;
-  flex-direction: row;
+  flex-direction: ${props => (props.column ? 'column' : 'row')};
   background-color: ${props => props.theme.colors.cardBackground};
 `;
 
