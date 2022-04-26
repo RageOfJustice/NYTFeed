@@ -22,6 +22,7 @@ const Wrapper = styled.TouchableOpacity<Selectable>`
   padding: 6px;
   border-radius: 4px;
   border-width: 1px;
+  background-color: ${props => props.theme.colors.buttonBackground};
   border-color: ${({ selected, theme }) =>
     selected ? theme.colors.buttonSelected : theme.colors.text};
 `;

@@ -17,6 +17,11 @@ export const theme = {
     titleText: palette.black,
     cardBackground: palette.white,
     articlesBackground: palette.cyanPrimary,
+    filtersBackground: palette.cyanDark,
+    buttonBackground: palette.white,
+    modalButtonBackgroundPrimary: palette.purplePrimary,
+    modalButtonText: palette.white,
+    modalButtonBackgroundDefault: palette.grey,
   },
 };
 
