@@ -7,9 +7,7 @@ import { Button } from './button';
 import { Divider } from 'components';
 import { articlesBySectionAtom } from '../atoms';
 
-interface Props {}
-
-export const Filters: FC<Props> = props => {
+export const Filters: FC = () => {
   const articles = useAtomValue(articlesBySectionAtom);
   const locations = useMemo(
     () =>

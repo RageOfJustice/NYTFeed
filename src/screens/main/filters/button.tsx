@@ -145,5 +145,7 @@ const ModalButtonText = styled.Text<{ primary?: boolean }>`
   text-align: center;
   text-transform: capitalize;
   color: ${({ primary, theme }) =>
-    primary ? theme.colors.modalButtonText : theme.colors.modalButtonText};
+    primary
+      ? theme.colors.modalButtonTextPrimary
+      : theme.colors.modalButtonTextDefault};
 `;

@@ -3,6 +3,7 @@ const palette = {
   cyanDark: '#74c0e3',
   cyanPrimary: '#75d0e3',
   grey: '#6a6b6b',
+  greyLight: '#ececec',
   white: '#ffffff',
   black: '#333333',
 };
@@ -20,8 +21,9 @@ export const theme = {
     filtersBackground: palette.cyanDark,
     buttonBackground: palette.white,
     modalButtonBackgroundPrimary: palette.purplePrimary,
-    modalButtonText: palette.white,
-    modalButtonBackgroundDefault: palette.grey,
+    modalButtonTextPrimary: palette.white,
+    modalButtonBackgroundDefault: palette.greyLight,
+    modalButtonTextDefault: palette.black,
   },
 };
 
