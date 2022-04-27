@@ -1,11 +1,25 @@
 import { useCallback, useMemo } from 'react';
 import { atom, useAtom, useSetAtom, useAtomValue, WritableAtom } from 'jotai';
-import { getArticlesBySection, NewsSection } from 'api/top-stories';
+import {
+  getArticlesBySection,
+  NewsSection,
+  NEWS_SECTIONS,
+} from 'api/top-stories';
 import { Article } from 'api/types';
 import { setItem, getItem } from 'api/storage';
 import { uniq } from 'lodash';
 
-export const selectedSectionAtom = atom<NewsSection | undefined>(undefined);
+export const selectedSectionAtom = atom<NewsSection, NewsSection, void>(
+  NEWS_SECTIONS[0],
+  async (_, set, newSection) => {
+    set(selectedSectionAtom, newSection);
+    await setItem('section', newSection);
+  }
+);
+
+selectedSectionAtom.onMount = set => {
+  getItem('section', NEWS_SECTIONS[0]).then(set);
+};
 
 export type ArticlesMap = Record<NewsSection, Article[]>;
 
@@ -116,7 +130,6 @@ export const filteredArticlesBySectionAtom = atom(get => {
     return hasLocation && hasDescription;
   });
 
-  // console.log(filteredArticles.map(a => a.title));
   return filteredArticles;
 });
 
@@ -127,6 +140,8 @@ export const useSelectSection = () => {
   const resetFilters = useResetFilters();
   const selectSection = useCallback(
     async (section: NewsSection) => {
+      if (selectedSection === section) return;
+
       setSelectedSection(section);
       resetFilters();
       try {
@@ -139,7 +154,13 @@ export const useSelectSection = () => {
         // TODO: show notification
       }
     },
-    [setArticles, setLoadingArticles, setSelectedSection, resetFilters]
+    [
+      selectedSection,
+      setSelectedSection,
+      resetFilters,
+      setLoadingArticles,
+      setArticles,
+    ]
   );
 
   return [selectedSection, selectSection] as const;
