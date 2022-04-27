@@ -2,6 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import { FlatList } from 'react-native';
 import Modal from 'react-native-modal';
 import styled from '@emotion/native';
+
+import { ChevronDown } from 'assets/icons';
 import { Divider } from 'components';
 
 interface Props {
@@ -30,6 +32,7 @@ export const Button: FC<Props> = ({
     <>
       <Wrapper onPress={() => setModalVisible(true)}>
         <Text>{title}</Text>
+        <Icon source={ChevronDown} />
       </Wrapper>
       <Modal
         onBackButtonPress={closeModal}
@@ -80,6 +83,8 @@ export const Button: FC<Props> = ({
 
 const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
   flex: 1;
   padding: 8px;
   background-color: ${props => props.theme.colors.buttonBackground};
@@ -93,6 +98,10 @@ const Text = styled.Text`
   letter-spacing: 0.1px;
   text-transform: uppercase;
   color: ${props => props.theme.colors.text};
+`;
+
+const Icon = styled.Image`
+  tint-color: ${props => props.theme.colors.text};
 `;
 
 const ModalWrapper = styled.View`
